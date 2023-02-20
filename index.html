@@ -4,21 +4,183 @@
 body {
 	margin: 0;
 	background-image: url(img.jpg);
+	background-size: 100%;
 
-	font-size: 16px;
-    color: white;
+	font-size: 24px;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "San Franciso", "Helvetica Neue", Oxygen, Cantarell, sans-serif;
+	color: #3e0902;
+	overflow:  hidden;
+}
+.question {
+	display: none;
+	padding: 40px 20px;
+}
+.content {
+	margin: auto;
+	background-color: hsl(38deg 89% 62% / 0.7);
+	backdrop-filter: blur(10px);
+	line-height: 1.4em;
+}
+html, body, .container {
+	height:  100%;
 }
 
+button {
+	font-size: 24px;
+	padding: 6px 16px;
+}
 
+.buttons {
+	display: flex;
+	justify-content: space-evenly;
+	padding-bottom: 10px;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+}
 </style>
-<body>
+<script type="text/javascript">
 
-<!-- <img src="img.jpg" /> -->
+	var nextBtn, prevBtn, checkBtn, outBtn
 
-<p>
-	Щобо отримти подурнок треба відповісти на питання.	
-</p>
+	function onload() {
+		document.querySelector('#q0').style['display'] = 'block'
+		nextBtn = document.querySelector('#next-btn')
+		prevBtn = document.querySelector('#prev-btn')
+		checkBtn = document.querySelector('#check-btn')
+		outBtn = document.querySelector('#out-btn')
+	}
+
+	var tabCount = 4
+
+	var activeTab = 0
+
+	function onNext() {
+		if (activeTab === 0) {
+			prevBtn.style['display'] = 'inline-block'
+		}
+
+		if (activeTab < tabCount - 1) {
+			activeTab++
+			document.querySelectorAll('.question').forEach(el => el.style['display'] = 'none')
+			document.querySelector('#q'+activeTab).style['display'] = 'block'
+		}
+
+		if (activeTab === tabCount - 1) {
+			nextBtn.style['display'] = 'none'
+			checkBtn.style['display'] = 'inline-block'
+		}
+	}
+
+	function onPrevious () {
+		if (activeTab === tabCount - 1) {
+			checkBtn.style['display'] = 'none'
+			nextBtn.style['display'] = 'inline-block'
+		}
+
+		if (activeTab > 0) {
+			activeTab--
+			document.querySelectorAll('.question').forEach(el => el.style['display'] = 'none')
+			document.querySelector('#q'+activeTab).style['display'] = 'block'
+		}
+
+		if (activeTab === 0) {
+			prevBtn.style['display'] = 'none'
+		}
+	}
+
+	function onAllGood() {
+		nextBtn.style['display'] = 'none'
+		prevBtn.style['display'] = 'none'
+		checkBtn.style['display'] = 'none'
+		outBtn.style['display'] = 'inline-block'
+
+		document.querySelectorAll('.question').forEach(el => el.style['display'] = 'none')
+		document.querySelector('#q4').style['display'] = 'block'
+	}
+
+	function onGetPrize() {
+		window.location = 'https://guide.michelin.com/en/es/catalunya/barcelona/restaurants'
+	}
+
+	var correctResults = ['2', '2', '3']
+
+	function onCheck() {
+		for(var i = 1; i < tabCount; i++) {
+			var el = document.querySelector('input[name="q'+i+'o"]:checked')
+			if (!(el && (el.value === correctResults[i-1]))) {
+				alert('Одна чи більше відповідей хибні! Спробуй ще!')
+				return
+			}
+		}
+
+		onAllGood()
+	}
+
+</script>
+<head>
+	<title>Тест для малої кицьки</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body onload="onload()">
+	<div class="container">
+		<div class="content"> 
+			<div class="question" id="q0">
+				<div class="qtitle">
+					Вітаю!<br><br>
+					Ти — мала кицька і сьогодні твій день народження!<br>
+					Зазвичай, на день народження отримують подарунки, але сьогодні особливий день, тож щоб обрати подарунок, треба буде трошки попрацювати.
+					Для цього буде достатньо дати правильні відповіді на всі три наступні питання.<br><br>
+					Хай щастить!
+				</div>
+			</div>
+			<div class="question" id="q1">
+				<div class="qtitle">Коли з'явився перший задокументований рецепт чізкейка?</div>
+				<input type="radio" id="q1o1" name="q1o" value="1">
+				<label for="q1o1">У 1335 році</label><br>
+				<input type="radio" id="q1o2" name="q1o" value="2">
+				<label for="q1o2">У 230 році н.е.</label><br>
+				<input type="radio" id="q1o3" name="q1o" value="3">
+				<label for="q1o3">У 776 році до н. е.</label>
+			</div>
+			<div class="question" id="q2">
+				<div class="qtitle">Який продукт крадуть найчастіше у світі?</div>
+				<input type="radio" id="q2o1" name="q2o" value="1">
+				<label for="q2o1">Цукор</label><br>
+				<input type="radio" id="q2o2" name="q2o" value="2">
+				<label for="q2o2">Сир</label><br>
+				<input type="radio" id="q2o3" name="q2o" value="3">
+				<label for="q2o3">Шафран</label><br>
+				<input type="radio" id="q2o4" name="q2o" value="4">
+				<label for="q2o4">Хліб</label>
+			</div>
+			<div class="question" id="q3">
+				<div class="qtitle">Як буквально перекладаєтся "Доріто"?</div>
+				<input type="radio" id="q3o1" name="q3o" value="1">
+				<label for="q3o1">Сирне добро</label><br>
+				<input type="radio" id="q3o2" name="q3o" value="2">
+				<label for="q3o2">Маленьке та смачненьке</label><br>
+				<input type="radio" id="q3o3" name="q3o" value="3">
+				<label for="q3o3">Маленькі золоті штучки</label><br>
+				<input type="radio" id="q3o4" name="q3o" value="4">
+				<label for="q3o4">Смакота</label>
+			</div>
+			<div class="question" id="q4">
+				<div class="qtitle">Юху! Мала кицька впоралась з усіма питаннями! Час обрати подарунок для малої кицьки!</div>
+			</div>
+			<div class="buttons">
+				
+				<button id="prev-btn" style="display: none;" onclick="onPrevious()">Назад</button>
+				<button id="next-btn" onclick="onNext()">Далі</button>
+				<button id="check-btn" style="display: none;" onclick="onCheck()">Перевірити</button>
+				<button id="out-btn" style="display: none;" onclick="onGetPrize()">Обрати подарунок</button>
+
+			</div>
+			<div>
+			</div>
 
 
-</body>
-</html>
+		</body>
+		</html>
